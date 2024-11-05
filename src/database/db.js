@@ -1,6 +1,7 @@
-const { Client } = require("pg");
+// src/database/db.js
+const { Pool } = require("pg");
 
-const client = new Client({
+const pool = new Pool({
   host: "dpg-csbsmolds78s73bf2930-a.oregon-postgres.render.com",
   port: 5432,
   user: "param",
@@ -12,12 +13,19 @@ const client = new Client({
 });
 
 async function connectDB() {
-  if(!client._connected)
-  await client.connect();
+  try {
+    return await pool.connect(); // Connect using the pool
+  } catch (error) {
+    console.error("Failed to connect to database:", error);
+  }
 }
 
-async function disconnectDB() {
-  await client.end();
+async function disconnectDB(client) {
+  try {
+    if (client) await client.release(); // Release the client back to the pool
+  } catch (error) {
+    console.error("Failed to release client:", error);
+  }
 }
 
-export { client, connectDB, disconnectDB };
+module.exports = { pool, connectDB, disconnectDB };
