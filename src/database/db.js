@@ -12,6 +12,7 @@ const client = new Client({
 });
 
 async function connectDB() {
+  if(!client._connected)
   await client.connect();
 }
 
