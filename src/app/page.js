@@ -10,7 +10,7 @@ export default function Home() {
 
   const fetchTrips = async () => {
     if (!memberId) {
-      setError("Please enter a Member ID");
+      setError("Please enter a valid Aadhaar number");
       return;
     }
 
@@ -32,24 +32,31 @@ export default function Home() {
 
   return (
     <div className="container">
-      <h1>Trip Management System</h1>
+      <div className="welcome-section">
+        <h1>Trip Management System</h1>
+        <p>
+          Please enter your Aadhaar number to retrieve all trips associated with
+          your profile.
+        </p>
+      </div>
+
       <div className="input-group">
         <input
           type="text"
-          placeholder="Enter Member ID"
+          placeholder="Enter Aadhaar Number"
           value={memberId}
           onChange={(e) => setMemberId(e.target.value)}
           className="input-field"
         />
         <button onClick={fetchTrips} className="fetch-button">
-          Get Trips
+          Find My Trips
         </button>
       </div>
 
       {loading && <div className="loader"></div>}
       {error && <p className="error-message">{error}</p>}
 
-      <h2>Trips:</h2>
+      <h2>Your Trips:</h2>
       {trips.length > 0 ? (
         <div className="trip-list">
           {trips.map((trip, i) => (
@@ -75,7 +82,7 @@ export default function Home() {
           ))}
         </div>
       ) : (
-        !loading && <p>No trips found for this Member ID.</p>
+        !loading && <p>No trips found for this Aadhaar number.</p>
       )}
 
       <style jsx>{`
@@ -86,6 +93,23 @@ export default function Home() {
           text-align: center;
           font-family: Arial, sans-serif;
           color: #333;
+        }
+        .welcome-section {
+          margin-bottom: 20px;
+          padding: 15px;
+          background-color: #f0f8ff;
+          border-radius: 8px;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .welcome-section h1 {
+          font-size: 24px;
+          color: #0070f3;
+          margin: 0;
+        }
+        .welcome-section p {
+          font-size: 16px;
+          color: #555;
+          margin: 10px 0 0;
         }
         .input-group {
           display: flex;
